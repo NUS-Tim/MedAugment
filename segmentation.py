@@ -5,7 +5,7 @@ import argparse
 import numpy as np
 import os
 import torch.optim.lr_scheduler as lr_sche
-from utils import equipment, seg_model_sel, SoftIoULoss, seg_data_aug, calculate_metrics_seg
+from utils import equipment, seg_model_sel, seg_data_aug, calculate_metrics_seg
 from torch.optim import Adam
 import segmentation_models_pytorch as smp
 import cv2
@@ -31,7 +31,6 @@ def train(model, dataset, train_type, index, decay, bs, log, value, epoch, lr, m
 
     for i in range(epoch):
         t_loss, v_loss, t_loss_b, v_loss_b, train_in, val_in = 0, 0, 0, 0, 0, 0
-        t_dice, v_dice, t_dice_b, v_dice_b = 0, 0, 0, 0
         print('\nEpoch %d/%d \n' % (i + 1, epoch) + '-' * 60, file=open(f"./recording/{train_type}/{con_str}log.txt",
               "a")) if log else print('\nEpoch %d/%d \n' % (i + 1, epoch) + '-' * 60)
 
