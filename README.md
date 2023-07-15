@@ -1,26 +1,70 @@
 # MedAugment
-Official Pytorch Implementation for Paper: “MedAugment: Universal Automatic Data Augmentation Plug-in for Medical Image Analysis”
+<a href='https://arxiv.org/abs/2306.17466'><img src='https://img.shields.io/badge/ArXiv-2304.09148-red' /></a> 
 
-To use MedAugment as a plug-in for your own project, move the [plug-in](./utils/medaugment.py) to your project utils and run:
-```
-python ./utils/medaugment.py --dataset=your_dataset_name
-```
+Official Pytorch Implementation for Paper “MedAugment: Universal Automatic Data Augmentation Plug-in for Medical Image Analysis”
 
-This will produce an augmented dataset named "medaugment" at the same level as the "baseline" folder located at:
+To use MedAugment as a plug-in for your own project, you should have a "baseline" folder for your custom dataset at:
 ```
 ./datasets/classification/your_dataset_name/baseline
 ```
 
-For classification, provided "baseline" folder should have three subfolders for training, validation, and test. 
-For segmentation, provided baseline folder should have six subfolders, where three have the "_mask" suffix. 
-For each subfolder, the image and corresponding mask (if exist) should be processed to have the identical resolution, that is, 224 × 224. 
-The mask should be named with the suffix "_mask" following the image name. The accepted format includes PNG as well as JPG.
+The organization of the "baseline" folder should follow:
+```
+├── classification
+    ├── your_dataset_name
+        ├── baseline
+            ├── training
+            |   ├── class_1
+            |   |   ├── img_1.jpg  # .png
+            |   │   ├── img_2.jpg
+            |   │   ├── ...
+            |   ├── class_2
+            |   |   ├── img_a.jpg
+            |   │   ├── img_b.jpg
+            |   │   ├── ...
+            |   ├── ...
+            └── validation
+            └── test
 
-To run MedAugment and other augmentation methods and train the classification model in the paper:
+├── segmentation
+    ├── your_dataset_name
+        ├── baseline
+            ├── training
+            |   ├── img_1.jpg
+            │   ├── img_2.jpg
+            │   ├── ...
+            ├── training_mask
+            |   ├── img_1_mask.jpg  # suffix
+            │   ├── img_2_mask.jpg
+            │   ├── ...
+            └── validation
+            └── validation_mask
+            └── test
+            └── test_mask
+```
+
+You can then move the [plug-in](./utils/medaugment.py) to your project utils and run:
+```
+python ./utils/medaugment.py --dataset=your_dataset_name
+```
+This will produce an augmented dataset named "medaugment" at the same level as the "baseline" folder 
+
+To run MedAugment and other augmentation methods and train the model in the paper:
 ```
 python ./utils/generation.py
 python classification.py
 ```
-You should have a "recording" folder at the root with two subfolders named "classification" and "segmentation".
+You should have a "recording" folder at the root with two subfolders named "classification" and "segmentation"
 
-Important: Before running the commands, double-check the argument settings.
+##
+If you find MedAugment useful for your research, please cite our paper as:
+```
+@misc{liu2023medaugment,
+      title={MedAugment: Universal Automatic Data Augmentation Plug-in for Medical Image Analysis}, 
+      author={Zhaoshan Liu and Qiujie Lv and Yifan Li and Ziduo Yang and Lei Shen},
+      year={2023},
+      eprint={2306.17466},
+      archivePrefix={arXiv},
+      primaryClass={eess.IV}
+}
+```
