@@ -1,5 +1,5 @@
 # MedAugment
-<a href='https://arxiv.org/abs/2306.17466'><img src='https://img.shields.io/badge/ArXiv-2304.09148-red' /></a> 
+<a href='https://arxiv.org/abs/2306.17466'><img src='https://img.shields.io/badge/ArXiv-2306.17466-red' /></a> 
 
 Official Pytorch Implementation for Paper “MedAugment: Universal Automatic Data Augmentation Plug-in for Medical Image Analysis”
 
