@@ -11,7 +11,7 @@ from torchvision import transforms
 from PIL import Image
 
 
-def make_odd(num):
+def odd_conversion(num):
     num = math.ceil(num)
     if num % 2 == 0:
         num += 1
@@ -33,7 +33,7 @@ def med_augment(data_path, name, level, number_branch, mask_i=False, shield=Fals
         A.ColorJitter(brightness=0, contrast=0.04 * level, saturation=0, hue=0, p=0.2 * level),
         A.Posterize(num_bits=math.floor(8 - 0.8 * level), p=0.2 * level),
         A.Sharpen(alpha=(0.04 * level, 0.1 * level), lightness=(1, 1), p=0.2 * level),
-        A.GaussianBlur(blur_limit=(3, make_odd(3 + 0.8 * level)), p=0.2 * level),
+        A.GaussianBlur(blur_limit=(3, odd_conversion(3 + 0.8 * level)), p=0.2 * level),
         A.GaussNoise(var_limit=(2 * level, 10 * level), mean=0, per_channel=True, p=0.2 * level),
         A.Rotate(limit=4 * level, interpolation=1, border_mode=0, value=0, mask_value=None, rotate_method='largest_box',
                  crop_border=False, p=0.2 * level),
@@ -90,7 +90,6 @@ def med_augment(data_path, name, level, number_branch, mask_i=False, shield=Fals
 
 
 def generate_datasets(train_type, dataset, seed, level, number_branch):
-
     torch.manual_seed(seed)
     random.seed(seed)
     np.random.seed(seed)
@@ -104,8 +103,7 @@ def generate_datasets(train_type, dataset, seed, level, number_branch):
                  os.path.isdir(os.path.join(f"{folder_path}/baseline/training", name))])
 
         for folder in ["medaugment"]:
-            shutil.copytree(f"{folder_path}baseline", f"{folder_path}{folder}",
-                            ignore=shutil.ignore_patterns("training"))
+            shutil.copytree(f"{folder_path}baseline", f"{folder_path}{folder}", ignore=shutil.ignore_patterns("training"))
             training_folder_path = f"{folder_path}{folder}/training"
             os.makedirs(training_folder_path)
             for i in range(n):
@@ -120,8 +118,7 @@ def generate_datasets(train_type, dataset, seed, level, number_branch):
         folder_path = f"./datasets/segmentation/{dataset}/"
 
         for folder in ["medaugment"]:
-            shutil.copytree(f"{folder_path}baseline", f"{folder_path}{folder}",
-                            ignore=shutil.ignore_patterns("training", "training_mask"))
+            shutil.copytree(f"{folder_path}baseline", f"{folder_path}{folder}", ignore=shutil.ignore_patterns("training", "training_mask"))
             os.makedirs(f"{folder_path}{folder}/training")
             os.makedirs(f"{folder_path}{folder}/training_mask")
 

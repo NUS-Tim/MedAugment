@@ -7,7 +7,6 @@ from torchvision.datasets import ImageFolder
 
 
 def cls_data_aug(dataset, index, bs, device):
-
     sets = ["augmix", "randaugment", "autoaugment", "trivialaugment", "medaugment"]
     set_type = sets[index-1]
     transform = transforms.ToTensor()
@@ -28,9 +27,9 @@ def cls_data_aug(dataset, index, bs, device):
     return train_l, val_l, test_l, train_d, val_d, test_d
 
 
-class Seg_Dataset(tud.Dataset):
+class SegDataset(tud.Dataset):
     def __init__(self, path, transform):
-        super(Seg_Dataset, self).__init__()
+        super(SegDataset, self).__init__()
         self.img_path = path
         self.mask_path = path + "_mask"
         self.transform = transform
@@ -50,6 +49,7 @@ class Seg_Dataset(tud.Dataset):
 
         else:
             img, mask = img, mask
+
         return self.img_name[item], img, mask[0,:,:].unsqueeze(0)
 
     def __len__(self):
@@ -57,14 +57,13 @@ class Seg_Dataset(tud.Dataset):
 
 
 def seg_data_aug(dataset, index, bs, device):
-
     sets = ["oneaugment", "twoaugment", "threeaugment", "medaugment"]
     set_type = sets[index-1]
     transform = transforms.ToTensor()
 
-    train_d = Seg_Dataset(f"./datasets/segmentation/{dataset}/{set_type}/training", transform=transform)
-    val_d = Seg_Dataset(f"./datasets/segmentation/{dataset}/{set_type}/validation", transform=transform)
-    test_d = Seg_Dataset(f"./datasets/segmentation/{dataset}/{set_type}/test", transform=transform)
+    train_d = SegDataset(f"./datasets/segmentation/{dataset}/{set_type}/training", transform=transform)
+    val_d = SegDataset(f"./datasets/segmentation/{dataset}/{set_type}/validation", transform=transform)
+    test_d = SegDataset(f"./datasets/segmentation/{dataset}/{set_type}/test", transform=transform)
 
     if str(device) == 'cuda':
         train_l = tud.DataLoader(train_d, batch_size=bs, shuffle=True, generator=torch.Generator(device='cuda'))
